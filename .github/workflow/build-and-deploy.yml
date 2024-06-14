@@ -33,9 +33,9 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
 
           # Create directory on server if it doesn't exist
-          ssh -o StrictHostKeyChecking=no 156337-8551@gate.jpc.infomaniak.com:3022 "mkdir -p ~/my-app"
+          ssh -o StrictHostKeyChecking=no ssh 8551@gate.jpc.infomaniak.com "mkdir -p ~/my-app"
 
           # Copy build files to server using SCP
-          scp -o StrictHostKeyChecking=no -r client/build f156337-8551@gate.jpc.infomaniak.com:3022:~/my-app
+          scp -o StrictHostKeyChecking=no -r client/build ssh 8551@gate.jpc.infomaniak.com:3022:~/my-app
 
           # Optional: Restart server or any other post-deployment tasks
