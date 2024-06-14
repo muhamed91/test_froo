@@ -21,9 +21,8 @@ jobs:
       - name: Prepare SSH
         run: |
           mkdir -p ~/.ssh
-         
 
-      - name: Add SSH Private Key SSH
+      - name: Add SSH Private Key
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
@@ -32,11 +31,16 @@ jobs:
           eval $(ssh-agent -s)
           ssh-add ~/.ssh/id_rsa
 
-      - name: Test SSH Connection
-        run: ssh -v -o StrictHostKeyChecking=no -p 3022 8551@gate.jpc.infomaniak.com "echo 'SSH connection test'"
-
-      - name: Deploy to server
+      - name: Select Environment
+        id: select_environment
         run: |
+          # Simulate selecting option 3 (replace with actual command for jsh)
+          echo "3" | jsh
+
+      - name: Deploy to selected environment
+        run: |
+          # Assuming deployment commands follow the environment selection
+          # Replace with actual deployment commands using the selected environment
           # Create directory on server if it doesn't exist
           ssh -o StrictHostKeyChecking=no -p 3022 8551@gate.jpc.infomaniak.com "mkdir -p /home/jelastic/ROOT"
 
