@@ -1,4 +1,4 @@
-name: Build and Deploy
+ame: Build and Deploy
 
 on:
   push:
@@ -16,7 +16,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '14'  # Adjust Node.js version as needed
+          node-version: '16'  # Adjust Node.js version as needed
 
       - name: Install dependencies and build
         run: |
@@ -33,9 +33,9 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
 
           # Create directory on server if it doesn't exist
-          ssh -o StrictHostKeyChecking=no ffht8re79b87@juser.ik-server.com "mkdir -p ~/my-app"
+          ssh -o StrictHostKeyChecking=no ssh 8551@gate.jpc.infomaniak.com "mkdir -p ~/my-app"
 
           # Copy build files to server using SCP
-          scp -o StrictHostKeyChecking=no -r client/build ffht8re79b87@juser.ik-server.com:~/my-app
+          scp -o StrictHostKeyChecking=no -r client/build ssh 8551@gate.jpc.infomaniak.com:3022:~/my-app
 
           # Optional: Restart server or any other post-deployment tasks
