@@ -18,11 +18,7 @@ jobs:
         with:
           node-version: '16'  # Adjust Node.js version as needed
 
-      - name: Prepare SSH
-        run: |
-          mkdir ~/.ssh
-          touch ~/.ssh/known_hosts
-          ssh-keyscan -t rsa gate.jpc.infomaniak.com -p 3022 >> ~/.ssh/known_hosts
+  
 
       - name: Add SSH Private Key
         env:
