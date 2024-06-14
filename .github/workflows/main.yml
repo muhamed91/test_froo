@@ -34,10 +34,7 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
           # Create SSH directory and set permissions
-          mkdir -p ~/.ssh
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-
+        
           # Optionally print the SSH key for debugging (remove after testing)
           # echo "$SSH_PRIVATE_KEY"
           # cat ~/.ssh/id_rsa
