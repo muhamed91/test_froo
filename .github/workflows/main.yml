@@ -30,9 +30,9 @@ jobs:
         run: |
           # Create SSH directory and set permissions
         
-          # Optionally print the SSH key for debugging (remove after testing)
-          # echo "$SSH_PRIVATE_KEY"
-          # cat ~/.ssh/id_rsa
+        # Optionally print the SSH key for debugging (remove after testing)
+          echo "$SSH_PRIVATE_KEY"
+          cat ~/.ssh/id_rsa
 
           # Debug - Check SSH connection
           ssh -o StrictHostKeyChecking=no -p 3022 8551@gate.jpc.infomaniak.com "echo 'SSH connection established'"
