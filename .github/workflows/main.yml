@@ -40,7 +40,7 @@ jobs:
         run: |
           # Read simulated user input from file
           option=$(cat selected_option.txt)
-          echo "$option" | jsh
+          echo "$option" 
 
       - name: Deploy to selected environment
         run: |
