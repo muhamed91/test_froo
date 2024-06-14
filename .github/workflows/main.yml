@@ -21,21 +21,21 @@ jobs:
       - name: Prepare SSH
         run: |
           mkdir -p ~/.ssh
-
-      - name: Add SSH Private Key
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        run: |
           echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          eval $(ssh-agent -s)
-          ssh-add ~/.ssh/id_rsa
+          ssh-keyscan -t rsa gate.jpc.infomaniak.com >> ~/.ssh/known_hosts
 
-      - name: Deploy to server
+      - name: Select Environment
+        id: select_environment
+        run: echo "3" > selected_environment.txt
+
+      - name: Read Selected Environment
         run: |
-          # Replace with deployment commands directly
-          # Create directory on server if it doesn't exist
-          ssh -o StrictHostKeyChecking=no -p 3022 8551@gate.jpc.infomaniak.com "mkdir -p /home/jelastic/ROOT"
+          environment=$(cat selected_environment.txt)
+          echo "Selected Environment: $environment"
 
-          # Copy build files to server using SCP
+      - name: Deploy to Selected Environment
+        if: ${{ steps.select_environment.outputs.environment == '3' }}
+        run: |
+          ssh -o StrictHostKeyChecking=no -p 3022 8551@gate.jpc.infomaniak.com "mkdir -p /home/jelastic/ROOT"
           scp -o StrictHostKeyChecking=no -P 3022 -r client/build 8551@gate.jpc.infomaniak.com:/home/jelastic/ROOT
