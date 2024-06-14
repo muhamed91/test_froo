@@ -20,7 +20,7 @@ jobs:
 
       - name: Prepare SSH
         run: |
-          mkdir -p ~/.ssh
+          mkdir ~/.ssh
           touch ~/.ssh/known_hosts
           ssh-keyscan -t rsa gate.jpc.infomaniak.com -p 3022 >> ~/.ssh/known_hosts
 
