@@ -18,7 +18,9 @@ jobs:
         with:
           node-version: '16'  # Adjust Node.js version as needed
 
-
+      - name: Prepare SSH
+        run: |
+          mkdir -p ~/.ssh
 
       - name: Add SSH Private Key
         env:
