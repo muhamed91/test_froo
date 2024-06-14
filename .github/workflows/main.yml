@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: Print SSH Private Key
 
 on:
   push:
@@ -6,48 +6,13 @@ on:
       - main  # Adjust branch name as needed
 
 jobs:
-  deploy:
+  print-key:
     runs-on: ubuntu-latest
-
+    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16'  # Adjust Node.js version as needed
-
-      - name: Install dependencies and build
-        run: |
-          cd client  # Assuming client directory contains your React application
-          npm install
-          npm run build
-
-      - name: Deploy to server
+      - name: Print SSH Private Key
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
-          # Create SSH directory and set permissions
-          mkdir -p ~/.ssh
-
-          # Add the SSH private key
-          echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-
-          # Debug - Print the SSH key
-          echo "Printing the SSH key:"
-          cat ~/.ssh/id_rsa
-
-          # Check SSH connection
-          echo "Testing SSH connection:"
-          ssh -o StrictHostKeyChecking=no -v -p 3022 8551@gate.jpc.infomaniak.com "echo 'SSH connection established'"
-
-          # Create directory on server if it doesn't exist
-          ssh -o StrictHostKeyChecking=no -p 3022 8551@gate.jpc.infomaniak.com "mkdir -p /home/jelastic/ROOT"
-
-          # Copy build files to server using SCP
-          scp -o StrictHostKeyChecking=no -P 3022 -r client/build 8551@gate.jpc.infomaniak.com:/home/jelastic/ROOT
-
-          # Optional: Restart server or any other post-deployment tasks
-          # ssh -o StrictHostKeyChecking=no -p 3022 8551@gate.jpc.infomaniak.com "systemctl restart my-app.service"
+          echo "Printing SSH Private Key..."
+          echo "${SSH_PRIVATE_KEY}"
