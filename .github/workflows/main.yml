@@ -23,7 +23,7 @@ jobs:
           mkdir -p ~/.ssh
          
 
-      - name: Add SSH Private Key
+      - name: Add SSH Private Key SSH
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
