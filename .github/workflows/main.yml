@@ -30,7 +30,7 @@ jobs:
         run: |
           # Create SSH directory and set permissions
         
-          # Optionally print the SSH key for debugging (remove after testing)
+          # Optionally print the SSH key for debugging (remove after testinggg)
           echo "$SSH_PRIVATE_KEY"
           cat ~/.ssh/id_rsa
 
