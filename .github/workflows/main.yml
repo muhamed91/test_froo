@@ -31,6 +31,14 @@ jobs:
           eval $(ssh-agent -s)
           ssh-add ~/.ssh/id_rsa
 
+      - name: Install jsh CLI tool
+        run: |
+          # Replace with actual installation commands for jsh
+          wget -qO- https://example.com/path/to/jsh.tar.gz | tar xvz -C /tmp
+          sudo mv /tmp/jsh /usr/local/bin/jsh
+          sudo chmod +x /usr/local/bin/jsh
+          # Adjust the URL and installation commands based on how jsh is distributed
+
       - name: Select Environment
         id: select_environment
         run: |
