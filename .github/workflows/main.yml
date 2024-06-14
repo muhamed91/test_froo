@@ -38,10 +38,10 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
 
           # Debug - Check SSH connection
-          ssh -o StrictHostKeyChecking=no  8551@gate.jpc.infomaniak.com:3022 "echo 'SSH connection established'"
+          ssh -o StrictHostKeyChecking=no  156337-8551@gate.jpc.infomaniak.com:3022 "echo 'SSH connection established'"
 
           # Create directory on server if it doesn't exist
-          ssh -o StrictHostKeyChecking=no  8551@gate.jpc.infomaniak.com "mkdir -p ~/my-app"
+          ssh -o StrictHostKeyChecking=no  156337-8551@gate.jpc.infomaniak.com "mkdir -p ~/my-app"
 
           # Copy build files to server using SCP
-          scp -o StrictHostKeyChecking=no -r client/build  8551@gate.jpc.infomaniak.com:3022:~/my-app
+          scp -o StrictHostKeyChecking=no -r client/build  156337-8551@gate.jpc.infomaniak.com:3022:~/my-app
