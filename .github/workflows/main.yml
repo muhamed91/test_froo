@@ -29,7 +29,7 @@ jobs:
           echo "Printing environment variables for debugging:"
           env
 
-      - name: Deploy to server
+      - name: Deploy to server SSH
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
