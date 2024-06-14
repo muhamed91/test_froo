@@ -24,23 +24,38 @@ jobs:
           npm install
           npm run build
 
+      - name: Debug - Print environment variables
+        run: |
+          echo "Printing environment variables for debugging:"
+          env
+
+      - name: Debug - Check network connectivity
+        run: |
+          echo "Checking network connectivity:"
+          ping -c 4 gate.jpc.infomaniak.com
+
       - name: Deploy to server
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
           # Create SSH directory and set permissions
           mkdir -p ~/.ssh
-          
-          # Decode the SSH private key and store it in id_rsa
-          echo "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/id_rsa
+
+          # Add the SSH private key
+          echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
-          # Debug - Print SSH Key for verification (remove this after confirming the key is correct)
-          echo "SSH Key being used:"
+          # Debug - List contents of ~/.ssh directory
+          echo "Listing ~/.ssh directory:"
+          ls -la ~/.ssh
+
+          # Debug - Print the SSH key
+          echo "Printing the SSH key:"
           cat ~/.ssh/id_rsa
 
-          # Debug - Check SSH connection
-          ssh -o StrictHostKeyChecking=no -p 3022 8551@gate.jpc.infomaniak.com "echo 'SSH connection established'"
+          # Check SSH connection
+          echo "Testing SSH connection:"
+          ssh -o StrictHostKeyChecking=no -v -p 3022 8551@gate.jpc.infomaniak.com "echo 'SSH connection established'"
 
           # Create directory on server if it doesn't exist
           ssh -o StrictHostKeyChecking=no -p 3022 8551@gate.jpc.infomaniak.com "mkdir -p ~/my-app"
