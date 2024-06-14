@@ -24,14 +24,17 @@ jobs:
           npm install
           npm run build
           
-      - name: Deploy to server
+     - name: Deploy to server
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
           # Create SSH directory and set permissions
-        
-          # Optionally print the SSH key for debugging (remove after testinggg)
-          echo "$SSH_PRIVATE_KEY"
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          # Debug - Print SSH Key for verification (remove this after confirming the key is correct)
+          echo "SSH Key being used:"
           cat ~/.ssh/id_rsa
 
           # Debug - Check SSH connection
