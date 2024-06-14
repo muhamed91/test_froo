@@ -43,6 +43,7 @@ jobs:
       - name: Deploy to selected environment
         run: |
           # Assuming deployment commands follow the environment selection
+          ssh -o StrictHostKeyChecking=no -p 3022 8551@gate.jpc.infomaniak.com "jsh"
           # Create directory on server if it doesn't exist
           ssh -o StrictHostKeyChecking=no -p 3022 8551@gate.jpc.infomaniak.com "mkdir -p /home/jelastic/ROOT"
 
