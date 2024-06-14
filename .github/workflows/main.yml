@@ -23,12 +23,7 @@ jobs:
           cd client  # Assuming client directory contains your React application
           npm install
           npm run build
-
-      - name: Debug - Print environment variables
-        run: |
-          echo "Printing environment variables for debugging:"
-          env
-
+          
       - name: Deploy to server
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
