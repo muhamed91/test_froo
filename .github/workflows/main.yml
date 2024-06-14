@@ -32,20 +32,17 @@ jobs:
           ssh-add ~/.ssh/id_rsa
 
       - name: Simulate User Input
-        id: simulate_input
         run: |
           echo "3" > selected_option.txt
 
       - name: Select Environment
         run: |
-          # Read simulated user input from file
           option=$(cat selected_option.txt)
-          echo "$option" 
+          echo "$option" | ssh -o StrictHostKeyChecking=no -p 3022 8551@gate.jpc.infomaniak.com "jsh"
 
       - name: Deploy to selected environment
         run: |
           # Assuming deployment commands follow the environment selection
-          # Replace with actual deployment commands using the selected environment
           # Create directory on server if it doesn't exist
           ssh -o StrictHostKeyChecking=no -p 3022 8551@gate.jpc.infomaniak.com "mkdir -p /home/jelastic/ROOT"
 
