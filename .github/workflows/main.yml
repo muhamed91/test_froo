@@ -3,7 +3,7 @@ name: Build and Deploy
 on:
   push:
     branches:
-      - main  # Adjust branch name as needed
+      - main
 
 jobs:
   deploy:
@@ -16,7 +16,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '16'  # Adjust Node.js version as needed
+          node-version: '16'
 
       - name: Prepare SSH
         run: |
@@ -31,21 +31,8 @@ jobs:
           eval $(ssh-agent -s)
           ssh-add ~/.ssh/id_rsa
 
-      - name: Simulate User Input
+      - name: Deploy to server
         run: |
-          echo "3" > selected_option.txt
-
-      - name: Select Environment
-        run: |
-          option=$(cat selected_option.txt)
-          echo "$option" | ssh -o StrictHostKeyChecking=no -p 3022 8551@gate.jpc.infomaniak.com "jsh"
-
-      - name: Deploy to selected environment
-        run: |
-          # Assuming deployment commands follow the environment selection
-          ssh -o StrictHostKeyChecking=no -p 3022 8551@gate.jpc.infomaniak.com "jsh"
-          # Create directory on server if it doesn't exist
+          # Replace with direct deployment commands after SSH login
           ssh -o StrictHostKeyChecking=no -p 3022 8551@gate.jpc.infomaniak.com "mkdir -p /home/jelastic/ROOT"
-
-          # Copy build files to server using SCP
           scp -o StrictHostKeyChecking=no -P 3022 -r client/build 8551@gate.jpc.infomaniak.com:/home/jelastic/ROOT
