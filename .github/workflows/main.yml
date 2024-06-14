@@ -31,17 +31,11 @@ jobs:
           eval $(ssh-agent -s)
           ssh-add ~/.ssh/id_rsa
 
-      - name: Simulate User Input
-        run: echo "3" > selected_option.txt
-
-      - name: Select Environment
-        run: |
-          # Read simulated user input from file
-          option=$(cat selected_option.txt)
-          echo "Selected option: $option"
-
       - name: Deploy to server
         run: |
-          # Replace with direct deployment commands after SSH login
+          # Replace with deployment commands directly
+          # Create directory on server if it doesn't exist
           ssh -o StrictHostKeyChecking=no -p 3022 8551@gate.jpc.infomaniak.com "mkdir -p /home/jelastic/ROOT"
+
+          # Copy build files to server using SCP
           scp -o StrictHostKeyChecking=no -P 3022 -r client/build 8551@gate.jpc.infomaniak.com:/home/jelastic/ROOT
