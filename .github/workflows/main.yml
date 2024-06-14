@@ -24,23 +24,16 @@ jobs:
           npm install
           npm run build
 
-      - name: Debug - Print environment variables
-        run: |
-          echo "Printing environment variables for debugging:"
-          env
-
-      - name: Deploy to server SSH
+      - name: Deploy to server
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
-  
+          # Create SSH directory and set permissions
+          mkdir -p ~/.ssh
+
           # Add the SSH private key
           echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-
-          # Debug - List contents of ~/.ssh directory
-          echo "Listing ~/.ssh directory:"
-          ls -la ~/.ssh
 
           # Debug - Print the SSH key
           echo "Printing the SSH key:"
@@ -51,10 +44,10 @@ jobs:
           ssh -o StrictHostKeyChecking=no -v -p 3022 8551@gate.jpc.infomaniak.com "echo 'SSH connection established'"
 
           # Create directory on server if it doesn't exist
-          ssh -o StrictHostKeyChecking=no -p 3022 8551@gate.jpc.infomaniak.com "mkdir -p ~/my-app"
+          ssh -o StrictHostKeyChecking=no -p 3022 8551@gate.jpc.infomaniak.com "mkdir -p /home/jelastic/ROOT"
 
           # Copy build files to server using SCP
-          scp -o StrictHostKeyChecking=no -P 3022 -r client/build 8551@gate.jpc.infomaniak.com:~/my-app
+          scp -o StrictHostKeyChecking=no -P 3022 -r client/build 8551@gate.jpc.infomaniak.com:/home/jelastic/ROOT
 
           # Optional: Restart server or any other post-deployment tasks
           # ssh -o StrictHostKeyChecking=no -p 3022 8551@gate.jpc.infomaniak.com "systemctl restart my-app.service"
