@@ -1,4 +1,4 @@
-name: Print SSH Private Key
+name: Build and Deploy
 
 on:
   push:
@@ -6,13 +6,49 @@ on:
       - main  # Adjust branch name as needed
 
 jobs:
-  print-key:
+  deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
-      - name: Print SSH Private Key
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'  # Adjust Node.js version as needed
+
+      - name: Prepare SSH
+        run: |
+          mkdir -p ~/.ssh
+          touch ~/.ssh/known_hosts
+          ssh-keyscan -t rsa gate.jpc.infomaniak.com -p 3022 >> ~/.ssh/known_hosts
+
+      - name: Add SSH Private Key
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
-          echo "Printing SSH Private Key..."
-          echo "${SSH_PRIVATE_KEY}"
+          echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          # Debug - Print the SSH key (for verification)
+          echo "Printing the SSH key:"
+          cat ~/.ssh/id_rsa
+
+      - name: Deploy to server
+        run: |
+          # Check if ~/.ssh directory and known_hosts file exist
+          ls -la ~/.ssh
+
+          # Check SSH connection
+          echo "Testing SSH connection:"
+          ssh -o StrictHostKeyChecking=no -v -p 3022 8551@gate.jpc.infomaniak.com "echo 'SSH connection established'"
+
+          # Create directory on server if it doesn't exist
+          ssh -o StrictHostKeyChecking=no -p 3022 8551@gate.jpc.infomaniak.com "mkdir -p /home/jelastic/ROOT"
+
+          # Copy build files to server using SCP
+          scp -o StrictHostKeyChecking=no -P 3022 -r client/build 8551@gate.jpc.infomaniak.com:/home/jelastic/ROOT
+
+          # Optional: Restart server or any other post-deployment tasks
+          # ssh -o StrictHostKeyChecking=no -p 3022 8551@gate.jpc.infomaniak.com "systemctl restart my-app.service"
