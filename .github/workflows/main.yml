@@ -44,4 +44,4 @@ jobs:
         run: |
           # Replace with direct deployment commands after SSH login
           ssh -o StrictHostKeyChecking=no -p 3022 8551@gate.jpc.infomaniak.com "mkdir -p /home/jelastic/ROOT"
-          scp -o StrictHostKeyChecking=no -P 3022 -r client/build 8551@gate.jpc.infomaniak.com:/home/jelastic/ROOT
+           echo "3" | scp -o StrictHostKeyChecking=no -P 3022 -r client/build 8551@gate.jpc.infomaniak.com:/home/jelastic/ROOT
