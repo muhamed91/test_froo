@@ -31,19 +31,16 @@ jobs:
           eval $(ssh-agent -s)
           ssh-add ~/.ssh/id_rsa
 
-      - name: Install jsh CLI tool
+      - name: Simulate User Input
+        id: simulate_input
         run: |
-          # Replace with actual installation commands for jsh
-          wget -qO- https://example.com/path/to/jsh.tar.gz | tar xvz -C /tmp
-          sudo mv /tmp/jsh /usr/local/bin/jsh
-          sudo chmod +x /usr/local/bin/jsh
-          # Adjust the URL and installation commands based on how jsh is distributed
+          echo "3" > selected_option.txt
 
       - name: Select Environment
-        id: select_environment
         run: |
-          # Simulate selecting option 3 (replace with actual command for jsh)
-          echo "3" | jsh
+          # Read simulated user input from file
+          option=$(cat selected_option.txt)
+          echo "$option" | jsh
 
       - name: Deploy to selected environment
         run: |
