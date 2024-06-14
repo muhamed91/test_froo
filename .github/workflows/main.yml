@@ -32,7 +32,7 @@ jobs:
       - name: Debug - Check network connectivity
         run: |
           echo "Checking network connectivity:"
-          ping -c 4 juser.ik-server.com
+          ping -c 4 8551@gate.jpc.infomaniak.com
 
       - name: Deploy to server
         env:
@@ -43,13 +43,13 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
 
           # Debug - Check SSH connection
-          ssh -o StrictHostKeyChecking=no ffht8re79b87@juser.ik-server.com "echo 'SSH connection established'"
+          ssh -o StrictHostKeyChecking=no  8551@gate.jpc.infomaniak.com "echo 'SSH connection established'"
 
           # Create directory on server if it doesn't exist
-          ssh -o StrictHostKeyChecking=no ffht8re79b87@juser.ik-server.com "mkdir -p ~/my-app"
+          ssh -o StrictHostKeyChecking=no  8551@gate.jpc.infomaniak.com "mkdir -p ~/my-app"
 
           # Copy build files to server using SCP
-          scp -o StrictHostKeyChecking=no -r client/build ffht8re79b87@juser.ik-server.com:~/my-app
+          scp -o StrictHostKeyChecking=no -r client/build  8551@gate.jpc.infomaniak.com:3022:~/my-app
 
           # Optional: Restart server or any other post-deployment tasks
           ssh -o StrictHostKeyChecking=no ffht8re79b87@juser.ik-server.com "echo 'Restarting server...'; systemctl restart my-app.service"
