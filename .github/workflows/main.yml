@@ -40,7 +40,7 @@ jobs:
           option=$(cat selected_option.txt)
           echo "::set-output name=selected_option::$option"
 
-      - name: Select Environment
+      - name: Select Environment and Deploy
         run: |
           selected_option=${{ steps.read_option.outputs.selected_option }}
           case $selected_option in
@@ -66,3 +66,22 @@ jobs:
               exit 1
               ;;
           esac
+
+      - name: Execute jsh Command
+        run: |
+          /bin/jsshclient \
+            --appid="1dd8d191d38fff45e62564fcf67fdcd6" \
+            --cmd="" \
+            --config="/etc/jsshmenu.conf" \
+            --exclude="" \
+            --help=false \
+            --lazy=true \
+            --logfile="/opt/jssh/menu.log" \
+            --loglevel="debug" \
+            --nodeid=156416 \
+            --platform_password="${{ secrets.PLATFORM_PASSWORD }}" \
+            --platform_url="https://app.dev.jelastic.com" \
+            --platform_user="gate@jelastic.com" \
+            --requestgroups=true \
+            --ssh_client="/bin/jsshclient" \
+            --uid=0
