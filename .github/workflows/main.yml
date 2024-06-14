@@ -21,21 +21,27 @@ jobs:
       - name: Prepare SSH
         run: |
           mkdir -p ~/.ssh
+
+      - name: Add SSH Private Key
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
           echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -t rsa gate.jpc.infomaniak.com >> ~/.ssh/known_hosts
+          eval $(ssh-agent -s)
+          ssh-add ~/.ssh/id_rsa
+
+      - name: Simulate User Input
+        run: echo "3" > selected_option.txt
 
       - name: Select Environment
-        id: select_environment
-        run: echo "3" > selected_environment.txt
-
-      - name: Read Selected Environment
         run: |
-          environment=$(cat selected_environment.txt)
-          echo "Selected Environment: $environment"
+          # Read simulated user input from file
+          option=$(cat selected_option.txt)
+          echo "Selected option: $option"
 
-      - name: Deploy to Selected Environment
-        if: ${{ steps.select_environment.outputs.environment == '3' }}
+      - name: Deploy to server
         run: |
+          # Replace with direct deployment commands after SSH login
           ssh -o StrictHostKeyChecking=no -p 3022 8551@gate.jpc.infomaniak.com "mkdir -p /home/jelastic/ROOT"
           scp -o StrictHostKeyChecking=no -P 3022 -r client/build 8551@gate.jpc.infomaniak.com:/home/jelastic/ROOT
