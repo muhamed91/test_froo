@@ -34,54 +34,14 @@ jobs:
       - name: Simulate User Input
         run: echo "3" > selected_option.txt
 
-      - name: Read Selected Option
-        id: read_option
+      - name: Select Environment
         run: |
+          # Read simulated user input from file
           option=$(cat selected_option.txt)
-          echo "::set-output name=selected_option::$option"
+          echo "Selected option: $option"
 
-      - name: Select Environment and Deploy
+      - name: Deploy to server
         run: |
-          selected_option=${{ steps.read_option.outputs.selected_option }}
-          case $selected_option in
-            0)
-              echo "Exiting deployment process."
-              exit 0
-              ;;
-            1)
-              echo "Refreshing environment list."
-              # Add commands to refresh environment list if needed
-              ;;
-            2)
-              echo "Performing actions for [My First Project] [0]:(0)."
-              # Add commands specific to [My First Project] [0]:(0) environment
-              ;;
-            3)
-              echo "Performing actions for env-5868270.jcloud.ik-server.com."
-              ssh -o StrictHostKeyChecking=no -p 3022 8551@gate.jpc.infomaniak.com "mkdir -p /home/jelastic/ROOT"
-              scp -o StrictHostKeyChecking=no -P 3022 -r client/build 8551@gate.jpc.infomaniak.com:/home/jelastic/ROOT
-              ;;
-            *)
-              echo "Invalid option selected."
-              exit 1
-              ;;
-          esac
-
-      - name: Execute jsh Command
-        run: |
-          /bin/jsshclient \
-            --appid="1dd8d191d38fff45e62564fcf67fdcd6" \
-            --cmd="" \
-            --config="/etc/jsshmenu.conf" \
-            --exclude="" \
-            --help=false \
-            --lazy=true \
-            --logfile="/opt/jssh/menu.log" \
-            --loglevel="debug" \
-            --nodeid=156416 \
-            --platform_password="${{ secrets.PLATFORM_PASSWORD }}" \
-            --platform_url="https://app.dev.jelastic.com" \
-            --platform_user="gate@jelastic.com" \
-            --requestgroups=true \
-            --ssh_client="/bin/jsshclient" \
-            --uid=0
+          # Replace with direct deployment commands after SSH login
+            ssh -o StrictHostKeyChecking=no -p 3022 8551@gate.jpc.infomaniak.com "mkdir -p /home/jelastic/ROOT"
+          scp -o StrictHostKeyChecking=no -P 3022 -r client/build 8551@gate.jpc.infomaniak.com:/home/jelastic/ROOT
